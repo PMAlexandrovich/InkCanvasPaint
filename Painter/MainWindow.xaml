@@ -1,0 +1,47 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        xmlns:GalaSoft_MvvmLight_Command="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+        xmlns:local="clr-namespace:Painter"
+        xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="Painter.MainWindow"
+        mc:Ignorable="d"
+        Title="MyPaint" Height="506.118" Width="890.246" >
+    <DockPanel>
+        <ToolBar DockPanel.Dock="Top">
+            <ComboBox x:Name="cb" Width="50">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <GalaSoft_MvvmLight_Command:EventToCommand CommandParameter="{Binding SelectedItem, ElementName=cb}" Command="{Binding SomeC}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <ComboBoxItem Content="Ink" Tag="Ink" IsSelected ="True"/>
+                <ComboBoxItem Content="Selection" Tag="Selection"/>
+                <ComboBoxItem Content="EraseByPoint" Tag="EraseByPoint"/>
+                <ComboBoxItem Content="EraseByStroke" Tag="EraseByStroke"/>
+            </ComboBox>
+            <Expander Header="Color">
+                <StackPanel Orientation="Horizontal">
+                    <local:ColorControl x:Name="cc" Color="{Binding CurrentColor, Mode=TwoWay}" Width="150"/>
+                    <Ellipse Height="50" Width="50" StrokeThickness="2" Stroke="Black">
+                        <Ellipse.Fill>
+                            <SolidColorBrush Color="{Binding CurrentColor}"/>
+                        </Ellipse.Fill>
+                    </Ellipse>
+                </StackPanel>
+            </Expander>
+            <Button Content="Left" Command="{Binding Path=Left}"/>
+            <Button Content="Right" Command="{Binding Path=Right}"/>
+        </ToolBar>
+        <Grid>
+            <Border SnapsToDevicePixels="True" BorderBrush="Black" BorderThickness="2">
+                <Grid>
+                    <InkCanvas x:Name="Ink"  EditingMode="{Binding EditingMode}" Strokes="{Binding Path=Strokes}" ClipToBounds="True"  DefaultDrawingAttributes="{Binding DrawingAttributes}">
+                    </InkCanvas>
+                </Grid>
+            </Border>
+        </Grid>
+    </DockPanel>
+</Window>
